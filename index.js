@@ -46,11 +46,12 @@ function holding(n, fn, context){
     }
   });
 
-  // error call back， will run fn immediate
-  Object.defineProperty(proxy, 'error', {
+  // run the fn immediate
+  Object.defineProperty(proxy, 'immediate', {
     writable: true,
-    value: function (error){
-      if (called) {
+    value: function (){
+      if (!called) {
+        // set called
         called = true;
 
         // call fn
@@ -68,6 +69,10 @@ function holding(n, fn, context){
 
     // times end
     if (times === n) {
+      // set called
+      called = true;
+
+      // call fn
       return fn.apply(context, arguments);
     } else if (times > n) {
       throw new RangeError('Expect to call ' + n + ' times, but got ' + times);
