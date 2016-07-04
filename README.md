@@ -26,20 +26,25 @@ done.immediate();
 
 ### holding(n, fn, context)
 - ```n``` - ```Number```
+
   already holding times
+
 - ```fn``` - ```Function```
+
   holding callback
+
 - ```context``` - ```*```
+
   fn context
 
 ### holding(n, fn, context).times
->the holding already executed times
+- the holding already executed times
 
 ### holding(n, fn, context).executed
->fn  is already executed
+- fn  is already executed
 
 ### holding(n, fn, context).immediate
->execute fn immediate if it isn't executed
+- execute fn immediate if it isn't executed
 
 ## License
 
