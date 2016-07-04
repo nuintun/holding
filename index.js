@@ -17,10 +17,12 @@
  * @returns {proxy}
  */
 function holding(n, fn, context){
+  // format n
   if ({}.toString.call(n) !== '[object Number]' && n !== n) {
     throw new TypeError('The first arguments must be a number.');
   }
 
+  // format fn
   if ({}.toString.call(fn) !== '[object Function]') {
     throw new TypeError('The second arguments must be a function.');
   }
