@@ -27,7 +27,7 @@ done.immediate();
 #### holding(n, fn, context)
 - ```n``` - ```Number```
 
-  already holding times
+  holding times, it will execute fn after n times
 
 - ```fn``` - ```Function```
 
