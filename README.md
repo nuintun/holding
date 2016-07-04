@@ -20,7 +20,7 @@ var holding = require('holding');
 var done = holding(3, done, this);
 
 done.times;
-done.executed;
+done.called;
 done.immediate();
 ```
 
@@ -40,11 +40,11 @@ done.immediate();
 #### holding(n, fn, context).times
 - the holding already executed times
 
-#### holding(n, fn, context).executed
-- fn  is already executed
+#### holding(n, fn, context).called
+- fn  is already called
 
 #### holding(n, fn, context).immediate
-- execute fn immediate if it isn't executed
+- execute fn immediate if it isn't called
 
 ## License
 

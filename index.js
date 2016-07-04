@@ -29,8 +29,8 @@ function holding(n, fn, context){
 
   // already holding times
   var times = 0;
-  // is executed
-  var executed = false;
+  // is fn called
+  var called = false;
 
   // max call times
   n = Math.max(0, n);
@@ -42,20 +42,20 @@ function holding(n, fn, context){
     }
   });
 
-  // is executed
-  Object.defineProperty(proxy, 'executed', {
+  // is fn called
+  Object.defineProperty(proxy, 'called', {
     get: function (){
-      return executed;
+      return called;
     }
   });
 
-  // run the fn immediate
+  // execute the fn immediate
   Object.defineProperty(proxy, 'immediate', {
     writable: true,
     value: function (){
-      if (!executed) {
-        // set executed
-        executed = true;
+      if (!called) {
+        // set called
+        called = true;
 
         // execute fn
         return fn.apply(context, arguments);
@@ -66,9 +66,9 @@ function holding(n, fn, context){
   // proxy
   function proxy(){
     // times end
-    if (!executed && times === n) {
-      // set executed
-      executed = true;
+    if (!called && times === n) {
+      // set called
+      called = true;
 
       // execute fn
       fn.apply(context, arguments);
