@@ -25,25 +25,25 @@ function holding(n, fn, context){
     throw new TypeError('The second arguments must be a function');
   }
 
-  // is called
-  var called = false;
-  // holding times
+  // already holding times
   var times = 0;
-  
+  // is executed
+  var executed = false;
+
   // max call times
   n = Math.max(0, n);
 
-  // called times
+  // executed times
   Object.defineProperty(proxy, 'times', {
     get: function (){
       return times;
     }
   });
 
-  // is called
-  Object.defineProperty(proxy, 'called', {
+  // is executed
+  Object.defineProperty(proxy, 'executed', {
     get: function (){
-      return called;
+      return executed;
     }
   });
 
@@ -51,9 +51,9 @@ function holding(n, fn, context){
   Object.defineProperty(proxy, 'immediate', {
     writable: true,
     value: function (){
-      if (!called) {
-        // set called
-        called = true;
+      if (!executed) {
+        // set executed
+        executed = true;
 
         // call fn
         return fn.apply(context, arguments);
@@ -63,15 +63,15 @@ function holding(n, fn, context){
 
   // proxy
   function proxy(){
-    // if called return
-    if (called) {
+    // if executed return
+    if (executed) {
       return;
     }
 
     // times end
     if (times === n) {
-      // set called
-      called = true;
+      // set executed
+      executed = true;
 
       // call fn
       return fn.apply(context, arguments);
