@@ -17,12 +17,12 @@
  * @returns {proxy}
  */
 function holding(n, fn, context){
-  if ({}.toString.call(n) !== '[Object number]' && n !== n) {
-    throw new TypeError('The first arguments must be a number');
+  if ({}.toString.call(n) !== '[object Number]' && n !== n) {
+    throw new TypeError('The first arguments must be a number.');
   }
 
-  if ({}.toString.call(fn) !== '[Object function]') {
-    throw new TypeError('The second arguments must be a function');
+  if ({}.toString.call(fn) !== '[object Function]') {
+    throw new TypeError('The second arguments must be a function.');
   }
 
   // already holding times
@@ -63,20 +63,16 @@ function holding(n, fn, context){
 
   // proxy
   function proxy(){
-    // if executed return
-    if (executed) {
-      return;
-    }
-
     // times end
-    if (times === n) {
+    if (!executed && times === n) {
       // set executed
       executed = true;
 
       // call fn
-      return fn.apply(context, arguments);
+      fn.apply(context, arguments);
     } else if (times > n) {
-      throw new RangeError('Expect to call ' + n + ' times, but got ' + times);
+      // throw for test framework
+      throw new RangeError('Expect to holding ' + n + ' times, but got ' + times + ' times.');
     }
 
     // times increment
