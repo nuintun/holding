@@ -73,7 +73,7 @@ function holding(n, fn, context){
       // call fn
       fn.apply(context, arguments);
     } else if (times > n) {
-      // throw for test framework
+      // throw error for test framework
       throw new RangeError('Expect to holding ' + n + ' times, but got ' + times + ' times.');
     }
 
