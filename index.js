@@ -57,7 +57,7 @@ function holding(n, fn, context){
         // set executed
         executed = true;
 
-        // call fn
+        // execute fn
         return fn.apply(context, arguments);
       }
     }
@@ -70,7 +70,7 @@ function holding(n, fn, context){
       // set executed
       executed = true;
 
-      // call fn
+      // execute fn
       fn.apply(context, arguments);
     } else if (times > n) {
       // throw error for test framework
