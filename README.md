@@ -24,7 +24,7 @@ done.executed;
 done.immediate();
 ```
 
-### holding(n, fn, context)
+#### holding(n, fn, context)
 - ```n``` - ```Number```
 
   already holding times
@@ -37,13 +37,13 @@ done.immediate();
 
   fn context
 
-### holding(n, fn, context).times
+#### holding(n, fn, context).times
 - the holding already executed times
 
-### holding(n, fn, context).executed
+#### holding(n, fn, context).executed
 - fn  is already executed
 
-### holding(n, fn, context).immediate
+#### holding(n, fn, context).immediate
 - execute fn immediate if it isn't executed
 
 ## License
