@@ -67,11 +67,8 @@ function holding(n, fn, context){
   function proxy(){
     // times end
     if (!called && times === n) {
-      // set called
-      called = true;
-
-      // execute fn
-      fn.apply(context, arguments);
+      // call fn immediate
+      proxy.immediate.apply(context, arguments);
     } else if (times > n) {
       // throw error for test framework
       throw new RangeError('Expect to holding ' + n + ' times, but got ' + times + ' times.');
