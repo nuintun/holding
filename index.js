@@ -66,7 +66,7 @@ function holding(n, fn, context){
   // proxy
   function proxy(){
     // times end
-    if (!called && times === n) {
+    if (times === n) {
       // call fn immediate
       proxy.immediate.apply(context, arguments);
     } else if (times > n) {
