@@ -31,8 +31,8 @@ function type(value) {
  */
 function holding(n, fn, context) {
   // format n
-  if (type(n) !== '[object Number]' && n !== n) {
-    throw new TypeError('The first arguments must be a number.');
+  if (type(n) !== '[object Number]' && !isFinite(n)) {
+    throw new TypeError('The first arguments must be a finite number.');
   }
 
   // format fn
