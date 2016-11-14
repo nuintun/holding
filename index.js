@@ -9,6 +9,19 @@
 
 'use strict';
 
+// vars
+var toString = Object.prototype.toString;
+var defineProperty = Object.defineProperty;
+
+/**
+ * type
+ * @param {any} value
+ * @returns
+ */
+function type(value) {
+  return toString.call(value);
+}
+
 /**
  * holding
  * @param n
@@ -16,14 +29,14 @@
  * @param context
  * @returns {proxy}
  */
-function holding(n, fn, context){
+function holding(n, fn, context) {
   // format n
-  if ({}.toString.call(n) !== '[object Number]' && n !== n) {
+  if (type(n) !== '[object Number]' && n !== n) {
     throw new TypeError('The first arguments must be a number.');
   }
 
   // format fn
-  if ({}.toString.call(fn) !== '[object Function]') {
+  if (type(fn) !== '[object Function]') {
     throw new TypeError('The second arguments must be a function.');
   }
 
@@ -36,23 +49,23 @@ function holding(n, fn, context){
   n = Math.max(0, n);
 
   // executed times
-  Object.defineProperty(proxy, 'times', {
-    get: function (){
+  defineProperty(proxy, 'times', {
+    get: function() {
       return times;
     }
   });
 
   // is fn called
-  Object.defineProperty(proxy, 'called', {
-    get: function (){
+  defineProperty(proxy, 'called', {
+    get: function() {
       return called;
     }
   });
 
   // execute the fn immediate
-  Object.defineProperty(proxy, 'immediate', {
+  defineProperty(proxy, 'immediate', {
     writable: true,
-    value: function (){
+    value: function() {
       if (!called) {
         // set called
         called = true;
@@ -64,7 +77,7 @@ function holding(n, fn, context){
   });
 
   // proxy
-  function proxy(){
+  function proxy() {
     // times end
     if (times === n) {
       // call fn immediate
