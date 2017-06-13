@@ -15,6 +15,7 @@ var defineProperty = Object.defineProperty;
 
 /**
  * type
+ *
  * @param {any} value
  * @returns
  */
@@ -24,6 +25,7 @@ function type(value) {
 
 /**
  * holding
+ *
  * @param n
  * @param fn
  * @param context
