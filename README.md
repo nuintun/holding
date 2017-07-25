@@ -16,34 +16,38 @@ $ npm install holding
 
 ```js
 var holding = require('holding');
-var done = holding(3, done, this);
+var done = holding(2, done, this);
 
-done.times;
-done.called;
-done.immediate();
+done();
+done();
+done(); // it works
+
+done.times; // show already holding times
+done.called; // show fn is already called
+done.immediate(); // execute fn immediate if it isn't called
 ```
 
 #### holding(n, fn, context)
-- ```n``` - ```Number```
+- ```n``` - ```{Number}```
 
-  holding times, it will execute fn after n times
+  holding times, it will execute fn after n times.
 
-- ```fn``` - ```Function```
+- ```fn``` - ```{Function}```
 
-  holding callback
+  holding callback.
 
-- ```context``` - ```*```
+- ```context``` - ```{Any}```
 
-  fn context
+  fn context.
 
 #### holding(n, fn, context).times
-- the holding already executed times
+- show already holding times.
 
 #### holding(n, fn, context).called
-- fn  is already called
+- show fn is already called.
 
-#### holding(n, fn, context).immediate
-- execute fn immediate if it isn't called
+#### holding(n, fn, context).immediate()
+- execute fn immediate if it isn't called.
 
 ## License
 
