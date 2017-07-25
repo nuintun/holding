@@ -1,10 +1,10 @@
 /*!
  * holding
  * Date: 2016/7/4
- * https://github.com/Nuintun/file-send
+ * https://github.com/nuintun/holding
  *
  * This is licensed under the MIT License (MIT).
- * For details, see: https://github.com/Nuintun/holding/blob/master/LICENSE
+ * For details, see: https://github.com/nuintun/holding/blob/master/LICENSE
  */
 
 'use strict';
@@ -16,8 +16,8 @@ var defineProperty = Object.defineProperty;
 /**
  * type
  *
- * @param {any} value
- * @returns
+ * @param {Any} value
+ * @returns {String}
  */
 function type(value) {
   return toString.call(value);
@@ -26,15 +26,15 @@ function type(value) {
 /**
  * holding
  *
- * @param n
- * @param fn
- * @param context
- * @returns {proxy}
+ * @param {Int} n
+ * @param {Function} fn
+ * @param {Any} context
+ * @returns {Function}
  */
 function holding(n, fn, context) {
   // format n
   if (type(n) !== '[object Number]' && !isFinite(n)) {
-    throw new TypeError('The first arguments must be a finite number.');
+    throw new TypeError('The first arguments must be a finite int number.');
   }
 
   // format fn
@@ -49,6 +49,23 @@ function holding(n, fn, context) {
 
   // max call times
   n = Math.max(0, n);
+
+  /**
+   * proxy
+   */
+  function proxy() {
+    // times end
+    if (times === n) {
+      // call fn immediate
+      proxy.immediate.apply(context, arguments);
+    } else if (times > n) {
+      // throw error for test framework
+      throw new RangeError('Expect to holding ' + n + ' times, but got ' + times + ' times.');
+    }
+
+    // times increment
+    ++times;
+  }
 
   // executed times
   defineProperty(proxy, 'times', {
@@ -66,7 +83,6 @@ function holding(n, fn, context) {
 
   // execute the fn immediate
   defineProperty(proxy, 'immediate', {
-    writable: true,
     value: function() {
       if (!called) {
         // set called
@@ -77,21 +93,6 @@ function holding(n, fn, context) {
       }
     }
   });
-
-  // proxy
-  function proxy() {
-    // times end
-    if (times === n) {
-      // call fn immediate
-      proxy.immediate.apply(context, arguments);
-    } else if (times > n) {
-      // throw error for test framework
-      throw new RangeError('Expect to holding ' + n + ' times, but got ' + times + ' times.');
-    }
-
-    // times increment
-    ++times;
-  }
 
   // return proxy function
   return proxy;
