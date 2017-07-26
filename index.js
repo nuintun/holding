@@ -31,10 +31,10 @@ function type(value) {
  * @param {Any} context
  * @returns {Function}
  */
-function holding(n, fn, context) {
+module.exports = function(n, fn, context) {
   // format n
-  if (type(n) !== '[object Number]' && !isFinite(n)) {
-    throw new TypeError('The first arguments must be a finite int number.');
+  if (type(n) !== '[object Number]' || n < 0 || n % 1 !== 0) {
+    throw new TypeError('The first arguments must be a natural number.');
   }
 
   // format fn
@@ -48,23 +48,26 @@ function holding(n, fn, context) {
   var called = false;
 
   // max call times
-  n = Math.max(0, n);
+  n += 1;
 
   /**
    * proxy
    */
   function proxy() {
+    // times increment
+    ++times;
+
     // times end
     if (times === n) {
       // call fn immediate
       proxy.immediate.apply(context, arguments);
     } else if (times > n) {
       // throw error for test framework
-      throw new RangeError('Expect to holding ' + n + ' times, but got ' + times + ' times.');
+      throw new RangeError('Expect to maximum called ' + n + ' times, but got ' + times + ' times.');
+    } else if (called) {
+      // throw error for test framework
+      throw new Error('Callback fn already called by immediate method.');
     }
-
-    // times increment
-    ++times;
   }
 
   // executed times
@@ -96,7 +99,4 @@ function holding(n, fn, context) {
 
   // return proxy function
   return proxy;
-}
-
-// exports
-module.exports = holding;
+};

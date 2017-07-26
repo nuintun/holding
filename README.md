@@ -16,15 +16,17 @@ $ npm install holding
 
 ```js
 var holding = require('holding');
-var done = holding(2, done, this);
+var done = holding(2, function() {
+  console.log('called');
+}, this);
 
 done();
 done();
 done(); // it works
 
-done.times; // show already holding times
-done.called; // show fn is already called
-done.immediate(); // execute fn immediate if it isn't called
+done.times; // show called times
+done.called; // show fn call status
+done.immediate(); // call fn immediate if it isn't called
 ```
 
 #### holding(n, fn, context)
@@ -41,13 +43,13 @@ done.immediate(); // execute fn immediate if it isn't called
   fn context.
 
 #### holding(n, fn, context).times
-- show already holding times.
+- show called times.
 
 #### holding(n, fn, context).called
-- show fn is already called.
+- show fn call status.
 
 #### holding(n, fn, context).immediate()
-- execute fn immediate if it isn't called.
+- call fn immediate if it isn't called.
 
 ## License
 
