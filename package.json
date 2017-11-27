@@ -1,6 +1,6 @@
 {
   "name": "holding",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "description": "Holding a callback for some times",
   "author": {
     "name": "nuintun",
@@ -15,16 +15,10 @@
     "url": "https://github.com/nuintun/holding/issues",
     "email": "nuintun@qq.com"
   },
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "license": "MIT",
   "main": "index",
-  "keywords": [
-    "callback",
-    "pedding",
-    "after",
-    "arch",
-    "control",
-    "flow",
-    "after",
-    "flowcontrol"
-  ]
+  "keywords": ["callback", "pedding", "after", "arch", "control", "flow", "after", "flowcontrol"]
 }

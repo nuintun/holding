@@ -1,102 +1,135 @@
-/*!
- * holding
- * Date: 2016/7/4
- * https://github.com/nuintun/holding
- *
- * This is licensed under the MIT License (MIT).
- * For details, see: https://github.com/nuintun/holding/blob/master/LICENSE
+/**
+ * @module index
+ * @license MIT
+ * @version 2017/11/27
  */
 
 'use strict';
 
-// vars
-var toString = Object.prototype.toString;
-var defineProperty = Object.defineProperty;
+// Vars
+const toString = Object.prototype.toString;
+const defineProperty = Object.defineProperty;
 
 /**
- * type
- *
- * @param {Any} value
- * @returns {String}
+ * @function type
+ * @param {any} value
+ * @returns {string}
  */
 function type(value) {
   return toString.call(value);
 }
 
 /**
- * holding
- *
- * @param {Int} n
+ * @function holding
+ * @param {number} n
  * @param {Function} fn
- * @param {Any} context
+ * @param {any} context
  * @returns {Function}
  */
-module.exports = function(n, fn, context) {
-  // format n
+function holding(n, fn, context) {
+  // Format n
   if (type(n) !== '[object Number]' || n < 0 || n % 1 !== 0) {
     throw new TypeError('The first arguments must be a natural number.');
   }
 
-  // format fn
+  // Format fn
   if (type(fn) !== '[object Function]') {
     throw new TypeError('The second arguments must be a function.');
   }
 
-  // already holding times
-  var times = 0;
-  // is fn called
-  var called = false;
+  // Already holding times
+  let times = 0;
+  // Is fn called
+  let called = false;
 
-  // max call times
+  // Format Max call times
   n += 1;
+  // Format context
+  context = arguments.length > 2 ? context : null;
 
   /**
-   * proxy
+   * @function proxy
    */
   function proxy() {
-    // times increment
+    // Times increment
     ++times;
 
-    // times end
+    // Times end
     if (times === n) {
-      // call fn immediate
-      proxy.immediate.apply(context, arguments);
+      // Call fn immediate
+      proxy.immediate.apply(null, arguments);
     } else if (times > n) {
-      // throw error for test framework
+      // Throw error for test framework
       throw new RangeError('Expect to maximum called ' + n + ' times, but got ' + times + ' times.');
     } else if (called) {
-      // throw error for test framework
+      // Throw error for test framework
       throw new Error('Callback fn already called by immediate method.');
     }
   }
 
-  // executed times
+  /**
+   * @function times
+   * @description Executed times
+   * @returns {number}
+   */
   defineProperty(proxy, 'times', {
-    get: function() {
+    configurable: false,
+    get: () => {
       return times;
     }
   });
 
-  // is fn called
+  /**
+   * @function called
+   * @description Is fn called
+   * @returns {boolean}
+   */
   defineProperty(proxy, 'called', {
-    get: function() {
+    configurable: false,
+    get: () => {
       return called;
     }
   });
 
-  // execute the fn immediate
+  /**
+   * @function immediate
+   * @description Execute the fn immediate
+   */
   defineProperty(proxy, 'immediate', {
-    value: function() {
+    configurable: false,
+    value: () => {
       if (!called) {
-        // set called
+        // Set called
         called = true;
 
-        // execute fn
+        // Execute fn
         return fn.apply(context, arguments);
       }
     }
   });
 
-  // return proxy function
+  // Return proxy function
   return proxy;
-};
+}
+
+/**
+ * @function assert
+ * @description Assertion testing
+ */
+defineProperty(holding, 'assert', {
+  configurable: false,
+  value: function(n, fn, context) {
+    const proxy = holding(n, fn, context);
+
+    return function() {
+      try {
+        return proxy.apply(null, arguments);
+      } catch (error) {
+        return fn(error);
+      }
+    };
+  }
+});
+
+// Exports
+module.exports = holding;

@@ -51,6 +51,9 @@ done.immediate(); // call fn immediate if it isn't called
 #### holding(n, fn, context).immediate()
 - call fn immediate if it isn't called.
 
+#### holding.assert(n, fn, context)
+- function for assertion testing
+
 ## License
 
 [MIT](LICENSE)
