@@ -97,7 +97,7 @@ function holding(n, fn, context) {
    */
   defineProperty(proxy, 'immediate', {
     configurable: false,
-    value: () => {
+    value: function() {
       if (!called) {
         // Set called
         called = true;

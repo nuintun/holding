@@ -1,6 +1,6 @@
 {
   "name": "holding",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Holding a callback for some times",
   "author": {
     "name": "nuintun",
