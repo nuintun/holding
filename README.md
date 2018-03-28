@@ -1,10 +1,10 @@
 # holding
 
->Holding a callback for some times
+> Holding a callback for some times
 >
->[![NPM Version][npm-image]][npm-url]
->[![Download Status][download-image]][npm-url]
->[![Dependencies][david-image]][david-url]
+> [![NPM Version][npm-image]][npm-url]
+> [![Download Status][download-image]][npm-url]
+> [![Dependencies][david-image]][david-url]
 
 ## Installation
 
@@ -15,9 +15,9 @@ $ npm install holding
 ## API
 
 ```js
-var holding = require('holding');
-var done = holding(2, function() {
-  console.log('called');
+const holding = require('holding');
+const done = holding(2, function() {
+  console.log(this, 'called');
 }, this);
 
 done();
@@ -26,33 +26,33 @@ done(); // it works
 
 done.times; // show called times
 done.called; // show fn call status
-done.immediate(); // call fn immediate if it isn't called
 ```
 
 #### holding(n, fn, context)
-- ```n``` - ```{Number}```
+
+* `n` - `{Number}`
 
   holding times, it will execute fn after n times.
 
-- ```fn``` - ```{Function}```
+* `fn` - `{Function}`
 
   holding callback.
 
-- ```context``` - ```{Any}```
+* `context` - `{Any}`
 
   fn context.
 
 #### holding(n, fn, context).times
-- show called times.
+
+* show called times.
 
 #### holding(n, fn, context).called
-- show fn call status.
 
-#### holding(n, fn, context).immediate()
-- call fn immediate if it isn't called.
+* show fn call status.
 
 #### holding.assert(n, fn, context)
-- function for assertion testing
+
+* function for assertion testing, will throw error if call times out of range.
 
 ## License
 

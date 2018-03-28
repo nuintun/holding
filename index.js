@@ -1,22 +1,35 @@
 /**
  * @module index
  * @license MIT
- * @version 2017/11/27
+ * @version 2018/03/28
  */
 
 'use strict';
 
-// Vars
-const toString = Object.prototype.toString;
-const defineProperty = Object.defineProperty;
-
 /**
- * @function type
- * @param {any} value
- * @returns {string}
+ * @function apply
+ * @description Faster apply, call is faster than apply, optimize less than 6 args
+ * @param  {Function} fn
+ * @param  {any} context
+ * @param  {Array|arguments} args
+ * @see https://github.com/micro-js/apply
+ * @see http://blog.csdn.net/zhengyinhui100/article/details/7837127
  */
-function type(value) {
-  return toString.call(value);
+function apply(fn, context, args) {
+  switch (args.length) {
+    // Faster
+    case 0:
+      return fn.call(context);
+    case 1:
+      return fn.call(context, args[0]);
+    case 2:
+      return fn.call(context, args[0], args[1]);
+    case 3:
+      return fn.call(context, args[0], args[1], args[2]);
+    default:
+      // Slower
+      return fn.apply(context, args);
+  }
 }
 
 /**
@@ -24,16 +37,12 @@ function type(value) {
  * @param {number} n
  * @param {Function} fn
  * @param {any} context
+ * @param {boolean} error
  * @returns {Function}
  */
-function holding(n, fn, context) {
-  // Format n
-  if (type(n) !== '[object Number]' || n < 0 || n % 1 !== 0) {
-    throw new TypeError('The first arguments must be a natural number.');
-  }
-
+function holding(n, fn, context, error) {
   // Format fn
-  if (type(fn) !== '[object Function]') {
+  if (typeof fn !== 'function') {
     throw new TypeError('The second arguments must be a function.');
   }
 
@@ -43,93 +52,76 @@ function holding(n, fn, context) {
   let called = false;
 
   // Format Max call times
-  n += 1;
+  n = Math.max(0, n >> 0) + 1;
   // Format context
   context = arguments.length > 2 ? context : null;
 
   /**
-   * @function proxy
+   * @function callback
    */
-  function proxy() {
+  function callback() {
     // Times increment
     ++times;
 
+    // Throw range error if error true
+    if (error && times > n) {
+      throw new RangeError(`Expect to maximum called ${n} times, but got ${times} times.`);
+    }
+
     // Times end
     if (times === n) {
-      // Call fn immediate
-      proxy.immediate.apply(null, arguments);
-    } else if (times > n) {
-      // Throw error for test framework
-      throw new RangeError('Expect to maximum called ' + n + ' times, but got ' + times + ' times.');
-    } else if (called) {
-      // Throw error for test framework
-      throw new Error('Callback fn already called by immediate method.');
+      // Set called
+      called = true;
+
+      // Execute fn
+      return apply(fn, context, arguments);
     }
   }
 
-  /**
-   * @function times
-   * @description Executed times
-   * @returns {number}
-   */
-  defineProperty(proxy, 'times', {
-    configurable: false,
-    get: () => {
-      return times;
+  // Define propertys
+  Object.defineProperties(callback, {
+    /**
+     * @property times
+     * @description Executed times
+     * @returns {number}
+     */
+    times: {
+      configurable: false,
+      get: () => times
+    },
+    /**
+     * @property called
+     * @description Is fn called
+     * @returns {boolean}
+     */
+    called: {
+      configurable: false,
+      get: () => called
     }
   });
 
-  /**
-   * @function called
-   * @description Is fn called
-   * @returns {boolean}
-   */
-  defineProperty(proxy, 'called', {
-    configurable: false,
-    get: () => {
-      return called;
-    }
-  });
-
-  /**
-   * @function immediate
-   * @description Execute the fn immediate
-   */
-  defineProperty(proxy, 'immediate', {
-    configurable: false,
-    value: function() {
-      if (!called) {
-        // Set called
-        called = true;
-
-        // Execute fn
-        return fn.apply(context, arguments);
-      }
-    }
-  });
-
-  // Return proxy function
-  return proxy;
+  // Return callback function
+  return callback;
 }
+
+/**
+ * @function holding
+ * @param {number} n
+ * @param {Function} fn
+ * @param {any} context
+ * @returns {Function}
+ */
+module.exports = (n, fn, context) => holding(n, fn, context, false);
 
 /**
  * @function assert
  * @description Assertion testing
+ * @param {number} n
+ * @param {Function} fn
+ * @param {any} context
+ * @returns {Function}
  */
-defineProperty(holding, 'assert', {
+Object.defineProperty(module.exports, 'assert', {
   configurable: false,
-  value: function(n, fn, context) {
-    const proxy = holding(n, fn, context);
-
-    return function() {
-      try {
-        return proxy.apply(null, arguments);
-      } catch (error) {
-        return fn(error);
-      }
-    };
-  }
+  value: (n, fn, context) => holding(n, fn, context, true)
 });
-
-// Exports
-module.exports = holding;
