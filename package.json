@@ -1,6 +1,6 @@
 {
   "name": "holding",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Holding a callback for some times",
   "author": {
     "name": "nuintun",
@@ -19,6 +19,6 @@
     "node": ">=4.0.0"
   },
   "license": "MIT",
-  "main": "index",
+  "main": "index.js",
   "keywords": ["callback", "pedding", "after", "arch", "control", "flow", "after", "flowcontrol"]
 }
