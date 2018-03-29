@@ -1,24 +1,23 @@
 {
   "name": "holding",
-  "version": "3.0.1",
-  "description": "Holding a callback for some times",
+  "version": "3.0.2",
+  "description": "Holding a callback for some times.",
   "author": {
     "name": "nuintun",
     "email": "nuintun@qq.com"
   },
-  "homepage": "https://nuintun.github.io/holding",
   "repository": {
     "type": "git",
-    "url": "git://github.com/nuintun/holding.git"
+    "url": "git+https://github.com/nuintun/holding.git"
   },
   "bugs": {
-    "url": "https://github.com/nuintun/holding/issues",
-    "email": "nuintun@qq.com"
+    "url": "https://github.com/nuintun/holding/issues"
   },
   "engines": {
     "node": ">=4.0.0"
   },
   "license": "MIT",
   "main": "index.js",
-  "keywords": ["callback", "pedding", "after", "arch", "control", "flow", "after", "flowcontrol"]
+  "keywords": ["callback", "pedding", "after", "arch", "control", "flow", "after", "flowcontrol"],
+  "homepage": "https://github.com/nuintun/holding#readme"
 }
