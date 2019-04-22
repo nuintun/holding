@@ -1,7 +1,7 @@
 /**
  * @module index
  * @license MIT
- * @version 2018/03/28
+ * @author nuintun
  */
 
 'use strict';
@@ -52,7 +52,7 @@ function holding(n, fn, context, error) {
   let called = false;
 
   // Format Max call times
-  n = Math.max(0, n >> 0) + 1;
+  n = Math.max(0, n >>> 0) + 1;
   // Format context
   context = arguments.length > 2 ? context : null;
 
